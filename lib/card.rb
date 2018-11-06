@@ -6,6 +6,7 @@ class Card
     @injourney = false
   end
   CAPACITY = 500
+  JOURNEY_VALUE = 100
 
   def add_money(amount)
     temp_money = @money + amount
@@ -16,7 +17,8 @@ class Card
     raise ("Error capacity of #{CAPACITY} reached")
   end
   def journey
-    @money -= 100
+    raise("You do not have enough funds") if money < JOURNEY_VALUE
+    @money -= JOURNEY_VALUE
     puts "journey paid for"
   end
   def touch_in

@@ -41,4 +41,7 @@ describe Card do
     card.touch_out
     expect{card.touch_out}.to raise_error("You've touched out already!")
   end
+  it "cannot travel without min funds" do
+    expect{card.journey}.to raise_error ("You do not have enough funds")
+  end
 end
