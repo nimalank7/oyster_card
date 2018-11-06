@@ -16,7 +16,7 @@ class Card
     @entry_station, @exit_station = nil
     @journey_history = []
   end
-  
+
   def add_money(amount)
     temp_money = @money + amount
     if temp_money <= CAPACITY
