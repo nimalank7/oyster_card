@@ -1,9 +1,8 @@
 class Card
   attr_accessor :money
-  attr_reader :injourney, :entry_station
+  attr_reader :entry_station
   def initialize
     @money = 0
-    @injourney = false
     @entry_station = nil
   end
   CAPACITY = 500
@@ -21,7 +20,6 @@ class Card
   def touch_in(station)
     raise("You do not have enough funds") if money < JOURNEY_VALUE
     raise("You've touched in already!") if in_journey?
-    @injourney = true # Code goes here
     @entry_station = station.name
     true
   end
@@ -30,7 +28,6 @@ class Card
     if in_journey? == false
       raise("You've touched out already!")
     end
-    @injourney = false
     @entry_station = nil
     journey
     true

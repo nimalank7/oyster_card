@@ -19,20 +19,20 @@ describe Card do
     expect(Card::CAPACITY).to eq(500)
   end
   it "returns false for default" do
-    expect(card.injourney).to eq false
+    expect(card.in_journey?).to eq false
   end
   it "touches in changes status in journey to true" do
     card.money = 400
     station.name = "Euston"
     card.touch_in(station)
-    expect(card.injourney).to eq true
+    expect(card.in_journey?).to eq true
   end
   it "touches out changes status in journey to false" do
     card.money = 400
     station.name = "Euston"
     card.touch_in(station)
     card.touch_out(station)
-    expect(card.injourney).to eq false
+    expect(card.in_journey?).to eq false
   end # Done up to here
   it "touching in 2x returns an error" do
     card.money = 400
