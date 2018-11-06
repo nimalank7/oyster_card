@@ -1,3 +1,4 @@
+require_relative "./station.rb"
 =begin
 get the entry_station value
 get the exit_station value
@@ -36,16 +37,21 @@ class Card
     if in_journey? == false
       raise("You've touched out already!")
     end
-    @entry_station = nil
     @exit_station = station.name
+    record_journey
+    @entry_station = nil
     journey
     true
   end
   def in_journey?
     entry_station == nil ? false : true
   end
-  private def journey
+  private
+  def journey
     @money -= JOURNEY_VALUE
     puts "journey paid for"
+  end
+  def record_journey
+    journey_history << {:entry_station => @entry_station, :exit_station => @exit_station}
   end
 end

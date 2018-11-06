@@ -93,6 +93,7 @@ describe Card do
     station_2.name = "Blackfriars"
     card.touch_in(station)
     card.touch_out(station_2)
-    expect(card.journey_history.include? {"entry_station" => "Euston","exit_station" => "Blackfriars"}).to eq true
+    hash = {:entry_station => "Euston", :exit_station => "Blackfriars"}
+    expect(card.journey_history.include? hash).to eq true
   end
 end
