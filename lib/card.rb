@@ -16,23 +16,24 @@ class Card
     end
     raise ("Error capacity of #{CAPACITY} reached")
   end
-  def journey
-    raise("You do not have enough funds") if money < JOURNEY_VALUE
-    @money -= JOURNEY_VALUE
-    puts "journey paid for"
-  end
+
   def touch_in
-    if @injourney == true
-      raise("You've touched in already!")
-    end
+    raise("You do not have enough funds") if money < JOURNEY_VALUE
+    raise("You've touched in already!") if @injourney == true
     @injourney = true
     true
   end
+
   def touch_out
     if @injourney == false
       raise("You've touched out already!")
     end
     @injourney = false
+    journey
     true
+  end
+  private def journey
+    @money -= JOURNEY_VALUE
+    puts "journey paid for"
   end
 end

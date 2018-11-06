@@ -1,6 +1,7 @@
 require 'card'
 describe Card do
   let(:card) {card = Card.new}
+
   it "Money on card displays 0" do
     expect(card.money).to eq 0
   end
@@ -15,33 +16,37 @@ describe Card do
   it "returns 500 for capacity" do
     expect(Card::CAPACITY).to eq(500)
   end
-  it "deducts journey" do
-    card.money = 400
-    card.journey()
-    expect(card.money).to eq(300)
-  end
   it "returns false for default" do
     expect(card.injourney).to eq false
   end
   it "touches in changes status in journey to true" do
+    card.money = 400
     card.touch_in
     expect(card.injourney).to eq true
   end
   it "touches out changes status in journey to false" do
+    card.money = 400
     card.touch_in
     card.touch_out
     expect(card.injourney).to eq false
   end # Done up to here
   it "touching in 2x returns an error" do
+    card.money = 400
     card.touch_in
     expect{card.touch_in}.to raise_error("You've touched in already!")
   end
   it "touching out 2x returns an error" do
+    card.money = 400
     card.touch_in
     card.touch_out
     expect{card.touch_out}.to raise_error("You've touched out already!")
   end
   it "cannot travel without min funds" do
-    expect{card.journey}.to raise_error ("You do not have enough funds")
+    expect{card.touch_in}.to raise_error ("You do not have enough funds")
+  end
+  it "correct amount deducted" do
+    card.money = 400
+    card.touch_in
+    expect{card.touch_out}.to change{card.money}.from(400).to(300)
   end
 end
