@@ -3,6 +3,7 @@ require 'station'
 describe Card do
   let(:card) {card = Card.new}
   let(:station) {station = Station.new}
+  let(:station_2) {station = Station.new}
 
   it "Money on card displays 0" do
     expect(card.money).to eq 0
@@ -71,5 +72,27 @@ describe Card do
   end
   it "displays entry station as nil" do
     expect(card.entry_station).to eq (nil)
+  end
+  it "display exit station as nil when initialized" do
+    expect(card.exit_station).to eq nil
+  end
+  it "displays exit station as Blackfriars" do
+    card.money = 400
+    station.name = "Euston"
+    station_2.name = "Blackfriars"
+    card.touch_in(station)
+    card.touch_out(station_2)
+    expect(card.exit_station).to eq "Blackfriars"
+  end
+  it "displays journey_history as empty array" do
+    expect(card.journey_history.empty?).to eq true
+  end
+  it "checks if Euston-BlackFriars is in journey_history" do
+    card.money = 400
+    station.name = "Euston"
+    station_2.name = "Blackfriars"
+    card.touch_in(station)
+    card.touch_out(station_2)
+    expect(card.journey_history.include? {"entry_station" => "Euston","exit_station" => "Blackfriars"}).to eq true
   end
 end

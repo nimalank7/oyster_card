@@ -1,9 +1,17 @@
+=begin
+get the entry_station value
+get the exit_station value
+put that into a hash
+push the hash into the journey_history instance variable (array)
+journey_history << {start_station => entry_station, end_station => exit_station}
+=end
 class Card
   attr_accessor :money
-  attr_reader :entry_station
+  attr_reader :entry_station, :exit_station, :journey_history
   def initialize
     @money = 0
-    @entry_station = nil
+    @entry_station, @exit_station = nil
+    @journey_history = []
   end
   CAPACITY = 500
   JOURNEY_VALUE = 100
@@ -29,6 +37,7 @@ class Card
       raise("You've touched out already!")
     end
     @entry_station = nil
+    @exit_station = station.name
     journey
     true
   end
