@@ -1,6 +1,8 @@
 require 'card'
+require 'station'
 describe Card do
   let(:card) {card = Card.new}
+  let(:station) {station = Station.new}
 
   it "Money on card displays 0" do
     expect(card.money).to eq 0
@@ -21,32 +23,53 @@ describe Card do
   end
   it "touches in changes status in journey to true" do
     card.money = 400
-    card.touch_in
+    station.name = "Euston"
+    card.touch_in(station)
     expect(card.injourney).to eq true
   end
   it "touches out changes status in journey to false" do
     card.money = 400
-    card.touch_in
-    card.touch_out
+    station.name = "Euston"
+    card.touch_in(station)
+    card.touch_out(station)
     expect(card.injourney).to eq false
   end # Done up to here
   it "touching in 2x returns an error" do
     card.money = 400
-    card.touch_in
-    expect{card.touch_in}.to raise_error("You've touched in already!")
+    station.name = "Euston"
+    card.touch_in(station)
+    expect{card.touch_in(station)}.to raise_error("You've touched in already!")
   end
   it "touching out 2x returns an error" do
     card.money = 400
-    card.touch_in
-    card.touch_out
-    expect{card.touch_out}.to raise_error("You've touched out already!")
+    station.name = "Euston"
+    card.touch_in(station)
+    card.touch_out(station)
+    expect{card.touch_out(station)}.to raise_error("You've touched out already!")
   end
   it "cannot travel without min funds" do
-    expect{card.touch_in}.to raise_error ("You do not have enough funds")
+    expect{card.touch_in(station)}.to raise_error ("You do not have enough funds")
   end
   it "correct amount deducted" do
     card.money = 400
-    card.touch_in
-    expect{card.touch_out}.to change{card.money}.from(400).to(300)
+    station.name = "Euston"
+    card.touch_in(station)
+    expect{card.touch_out(station)}.to change{card.money}.from(400).to(300)
+  end
+  it "displays true if injourney" do
+    card.money = 400
+    station.name = "Euston"
+    card.touch_in(station)
+    expect(card.in_journey?).to eq true
+  end
+  it "displays false if not injourney" do
+    card.money = 400
+    station.name = "Euston"
+    card.touch_in(station)
+    card.touch_out(station)
+    expect(card.in_journey?).to eq false
+  end
+  it "displays entry station as nil" do
+    expect(card.entry_station).to eq (nil)
   end
 end
