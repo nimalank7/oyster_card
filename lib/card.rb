@@ -1,7 +1,9 @@
 class Card
   attr_accessor :money
+  attr_reader :injourney
   def initialize
     @money = 0
+    @injourney = false
   end
   CAPACITY = 500
 
@@ -16,5 +18,19 @@ class Card
   def journey
     @money -= 100
     puts "journey paid for"
+  end
+  def touch_in
+    if @injourney == true
+      raise("You've touched in already!")
+    end
+    @injourney = true
+    true
+  end
+  def touch_out
+    if @injourney == false
+      raise("You've touched out already!")
+    end
+    @injourney = false
+    true
   end
 end
