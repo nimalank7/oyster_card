@@ -9,14 +9,14 @@ journey_history << {start_station => entry_station, end_station => exit_station}
 class Card
   attr_accessor :money
   attr_reader :entry_station, :exit_station, :journey_history
+  CAPACITY = 500
+  JOURNEY_VALUE = 100
   def initialize
     @money = 0
     @entry_station, @exit_station = nil
     @journey_history = []
   end
-  CAPACITY = 500
-  JOURNEY_VALUE = 100
-
+  
   def add_money(amount)
     temp_money = @money + amount
     if temp_money <= CAPACITY
