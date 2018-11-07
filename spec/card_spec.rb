@@ -4,6 +4,7 @@ describe Card do
   let(:card) {card = Card.new}
   let(:station_1) {double :station_1}
   let(:station_2) {double :station_2}
+  let(:incomplete_journey_1) {double :incomplete_journey_1}
 
   it "Money on card displays 0" do
     expect(card.money).to eq 0
@@ -90,6 +91,7 @@ describe Card do
     card.money = 400
     allow(station_2).to receive_messages(:name= => "Blackfriars", :name => "Blackfriars")
     card.touch_out(station_2)
+    allow(incomplete_journey_1).to receive_messages(:entry_station= => "Blackfriars", :entry_station => "Blackfriars")
     hash = {:exit_station => "Blackfriars"}
     expect(card.journey_history.include? hash).to eq true
   end
@@ -97,8 +99,8 @@ describe Card do
     card.money = 400
     allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
     card.touch_in(station_1)
-    hash = {:entry_station => "Euston"}
-    expect(card.journey_history.include? hash).to eq true
+    allow(incomplete_journey_1).to receive_messages(:entry_station= => "Euston", :entry_station => "Euston")
+    expect(card.journey_history.include? incomplete_journey_1).to eq true
   end
   it "deducts penalty fare if we don't touch in but touch out" do
     card.money = 400
