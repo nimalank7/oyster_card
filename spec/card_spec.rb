@@ -83,4 +83,31 @@ describe Card do
     hash = {:entry_station => "Euston", :exit_station => "Blackfriars"}
     expect(card.journey_history.include? hash).to eq true
   end
+  it "penalty fare is 200" do
+    expect(Card::PENALTY_FARE).to eq 200
+  end
+  it "stores incomplete journeys when we don't touch in" do
+    card.money = 400
+    allow(station_2).to receive_messages(:name= => "Blackfriars", :name => "Blackfriars")
+    card.touch_out(station_2)
+    hash = {:exit_station => "Blackfriars"}
+    expect(card.journey_history.include? hash).to eq true
+  end
+  it "stores incomplete journeys when we don't touch out" do
+    card.money = 400
+    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    card.touch_in(station_1)
+    hash = {:entry_station => "Euston"}
+    expect(card.journey_history.include? hash).to eq true
+  end
+  it "deducts penalty fare if we don't touch in but touch out" do
+    card.money = 400
+    allow(station_2).to receive_messages(:name= => "Blackfriars", :name => "Blackfriars")
+    expect{ card.touch_out(station_2)}.to change{ card.money }.by(-Card::PENALTY_FARE)
+  end
+  it "deducts penalty fare if we don't touch out but touch in" do
+    card.money = 400
+    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    expect{ card.touch_in(station_1)}.to change{ card.money }.by(-Card::PENALTY_FARE)
+  end
 end
