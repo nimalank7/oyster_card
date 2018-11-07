@@ -4,6 +4,6 @@ class Station
 
   def initialize
     @name = ""
-    @zone = nil
+    @zone = 0
   end
 end

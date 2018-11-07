@@ -1,11 +1,4 @@
 require_relative "./station.rb"
-=begin
-get the entry_station value
-get the exit_station value
-put that into a hash
-push the hash into the journey_history instance variable (array)
-journey_history << {start_station => entry_station, end_station => exit_station}
-=end
 class Card
   attr_accessor :money
   attr_reader :entry_station, :exit_station, :journey_history

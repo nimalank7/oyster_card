@@ -2,8 +2,8 @@ require 'card'
 require 'station'
 describe Card do
   let(:card) {card = Card.new}
-  let(:station) {station = Station.new}
-  let(:station_2) {station = Station.new}
+  let(:station_1) {double :station_1}
+  let(:station_2) {double :station_2}
 
   it "Money on card displays 0" do
     expect(card.money).to eq 0
@@ -24,50 +24,50 @@ describe Card do
   end
   it "touches in changes status in journey to true" do
     card.money = 400
-    station.name = "Euston"
-    card.touch_in(station)
+    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    card.touch_in(station_1)
     expect(card.in_journey?).to eq true
   end
   it "touches out changes status in journey to false" do
     card.money = 400
-    station.name = "Euston"
-    card.touch_in(station)
-    card.touch_out(station)
+    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    card.touch_in(station_1)
+    card.touch_out(station_1)
     expect(card.in_journey?).to eq false
-  end # Done up to here
+  end
   it "touching in 2x returns an error" do
     card.money = 400
-    station.name = "Euston"
-    card.touch_in(station)
-    expect{card.touch_in(station)}.to raise_error("You've touched in already!")
+    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    card.touch_in(station_1)
+    expect{card.touch_in(station_1)}.to raise_error("You've touched in already!")
   end
   it "touching out 2x returns an error" do
     card.money = 400
-    station.name = "Euston"
-    card.touch_in(station)
-    card.touch_out(station)
-    expect{card.touch_out(station)}.to raise_error("You've touched out already!")
+    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    card.touch_in(station_1)
+    card.touch_out(station_1)
+    expect{card.touch_out(station_1)}.to raise_error("You've touched out already!")
   end
   it "cannot travel without min funds" do
-    expect{card.touch_in(station)}.to raise_error ("You do not have enough funds")
+    expect{card.touch_in(station_1)}.to raise_error ("You do not have enough funds")
   end
   it "correct amount deducted" do
     card.money = 400
-    station.name = "Euston"
-    card.touch_in(station)
-    expect{card.touch_out(station)}.to change{card.money}.from(400).to(300)
+    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    card.touch_in(station_1)
+    expect{card.touch_out(station_1)}.to change{card.money}.from(400).to(300)
   end
   it "displays true if injourney" do
     card.money = 400
-    station.name = "Euston"
-    card.touch_in(station)
+    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    card.touch_in(station_1)
     expect(card.in_journey?).to eq true
   end
   it "displays false if not injourney" do
     card.money = 400
-    station.name = "Euston"
-    card.touch_in(station)
-    card.touch_out(station)
+    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    card.touch_in(station_1)
+    card.touch_out(station_1)
     expect(card.in_journey?).to eq false
   end
   it "displays entry station as nil" do
@@ -78,9 +78,9 @@ describe Card do
   end
   it "displays exit station as Blackfriars" do
     card.money = 400
-    station.name = "Euston"
-    station_2.name = "Blackfriars"
-    card.touch_in(station)
+    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    allow(station_2).to receive_messages(:name= => "Blackfriars", :name => "Blackfriars")
+    card.touch_in(station_1)
     card.touch_out(station_2)
     expect(card.exit_station).to eq "Blackfriars"
   end
@@ -89,9 +89,9 @@ describe Card do
   end
   it "checks if Euston-BlackFriars is in journey_history" do
     card.money = 400
-    station.name = "Euston"
-    station_2.name = "Blackfriars"
-    card.touch_in(station)
+    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    allow(station_2).to receive_messages(:name= => "Blackfriars", :name => "Blackfriars")
+    card.touch_in(station_1)
     card.touch_out(station_2)
     hash = {:entry_station => "Euston", :exit_station => "Blackfriars"}
     expect(card.journey_history.include? hash).to eq true
