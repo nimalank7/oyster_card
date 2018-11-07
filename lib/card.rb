@@ -4,6 +4,7 @@ class Card
   attr_reader :entry_station, :exit_station, :journey_history
   CAPACITY = 500
   JOURNEY_VALUE = 100
+  PENALTY_FARE = 200
   def initialize
     @money = 0
     @entry_station, @exit_station = nil
@@ -11,9 +12,8 @@ class Card
   end
 
   def add_money(amount)
-    temp_money = @money + amount
-    if temp_money <= CAPACITY
-      @money = temp_money
+    if @money + amount < CAPACITY
+      @money += amount
       return puts "Added #{amount}"
     end
     raise ("Error capacity of #{CAPACITY} reached")
@@ -21,30 +21,32 @@ class Card
 
   def touch_in(station)
     raise("You do not have enough funds") if money < JOURNEY_VALUE
-    raise("You've touched in already!") if in_journey?
+    deduct(PENALTY_FARE)
     @entry_station = station.name
+    @journey_history << {:entry_station => @entry_station}
     true
   end
 
   def touch_out(station)
-    if in_journey? == false
-      raise("You've touched out already!")
-    end
     @exit_station = station.name
-    record_journey
+    if empty? || @entry_station == nil
+      deduct(PENALTY_FARE)
+      return @journey_history << {:exit_station => @exit_station}
+    end
+    @money += (PENALTY_FARE - JOURNEY_VALUE)
+    @journey_history.last[:exit_station] = @exit_station
     @entry_station = nil
-    journey
     true
   end
   def in_journey?
     entry_station == nil ? false : true
   end
   private
-  def journey
-    @money -= JOURNEY_VALUE
-    puts "journey paid for"
+  def deduct(amount)
+    @money -= amount
+    true
   end
-  def record_journey
-    journey_history << {:entry_station => @entry_station, :exit_station => @exit_station}
+  def empty?
+    @journey_history.empty?
   end
 end

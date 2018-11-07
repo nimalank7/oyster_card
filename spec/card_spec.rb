@@ -35,19 +35,6 @@ describe Card do
     card.touch_out(station_1)
     expect(card.in_journey?).to eq false
   end
-  it "touching in 2x returns an error" do
-    card.money = 400
-    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
-    card.touch_in(station_1)
-    expect{card.touch_in(station_1)}.to raise_error("You've touched in already!")
-  end
-  it "touching out 2x returns an error" do
-    card.money = 400
-    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
-    card.touch_in(station_1)
-    card.touch_out(station_1)
-    expect{card.touch_out(station_1)}.to raise_error("You've touched out already!")
-  end
   it "cannot travel without min funds" do
     expect{card.touch_in(station_1)}.to raise_error ("You do not have enough funds")
   end
@@ -55,7 +42,7 @@ describe Card do
     card.money = 400
     allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
     card.touch_in(station_1)
-    expect{card.touch_out(station_1)}.to change{card.money}.from(400).to(300)
+    expect{card.touch_out(station_1)}.to change{card.money}.from(200).to(300)
   end
   it "displays true if injourney" do
     card.money = 400
