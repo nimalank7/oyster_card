@@ -39,7 +39,6 @@ describe Card do
   end
   it "checks if Euston-BlackFriars is in journey_history" do
     card.money = 400
-
     card.touch_in(station_1)
     card.touch_out(station_2)
     entry_and_exit_stations = []
