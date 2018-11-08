@@ -25,7 +25,7 @@ class Card
     journey = Journey.new
     deduct(PENALTY_FARE)
     journey.entry_station = station.name
-    @journey_history << journey
+    input_journey_into_journey_history(journey)
     true
   end
 
@@ -34,14 +34,11 @@ class Card
     journey.exit_station = station.name
     if empty? || journey_history.last.exit_station != ""
       deduct(PENALTY_FARE)
-      return @journey_history << journey
+      return input_journey_into_journey_history(journey)
     end
     @money += (PENALTY_FARE - JOURNEY_VALUE)
     @journey_history.last.exit_station = station.name
     true
-  end
-  def in_journey? # This method is redundant
-    entry_station == nil ? false : true
   end
   private
   def deduct(amount)
@@ -51,4 +48,8 @@ class Card
   def empty?
     @journey_history.empty?
   end
+  def input_journey_into_journey_history(journey)
+    @journey_history << journey
+  end
+
 end
