@@ -46,22 +46,22 @@ class Card
   def empty?
     @journey_history.empty?
   end
-  def input_journey_into_journey_history(journey)
+  def input_journey_into_journey_history(journey) # Extract this method out
     @journey_history << journey
   end
   def create_exit_station_journey(station)
     journey = Journey.new
     journey.exit_station = station.name
     journey
-  end
+  end # Extract this method out
   def create_entry_station_journey(station)
     journey = Journey.new
     journey.entry_station = station.name
     journey
-  end
+  end # Extract this method out
   def set_exit_station(station)
     @journey_history.last.exit_station = station.name
-  end
+  end # Do we need to extract this out?
   def reimburse_penalty
     @money += (PENALTY_FARE - JOURNEY_VALUE)
   end
