@@ -8,10 +8,11 @@ describe Card do
   let(:journey) {double :journey}
   let(:incomplete_journey_1) {double :incomplete_journey_1}
   let(:incomplete_journey_2) {double :incomplete_journey_2}
-
-  it "Money on card displays 0" do
-    expect(card.money).to eq 0
+  before(:each) do
+    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    allow(station_2).to receive_messages(:name= => "Blackfriars", :name => "Blackfriars")
   end
+
   it "adds 100 to the total" do
     card.add_money(100)
     expect(card.money).to eq 100
@@ -29,7 +30,7 @@ describe Card do
   end
   it "correct amount deducted" do
     card.money = 400
-    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+
     card.touch_in(station_1)
     expect{card.touch_out(station_1)}.to change{card.money}.from(200).to(300)
   end
@@ -38,8 +39,7 @@ describe Card do
   end
   it "checks if Euston-BlackFriars is in journey_history" do
     card.money = 400
-    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
-    allow(station_2).to receive_messages(:name= => "Blackfriars", :name => "Blackfriars")
+
     card.touch_in(station_1)
     card.touch_out(station_2)
     entry_and_exit_stations = []
@@ -52,7 +52,6 @@ describe Card do
   end
   it "stores incomplete journeys when we don't touch in" do
     card.money = 400
-    allow(station_2).to receive_messages(:name= => "Blackfriars", :name => "Blackfriars")
     card.touch_out(station_2)
     entry_and_exit_stations = []
     entry_and_exit_stations << card.journey_history[0].entry_station
@@ -61,7 +60,6 @@ describe Card do
   end
   it "stores incomplete journeys when we don't touch out" do
     card.money = 400
-    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
     card.touch_in(station_1)
     entry_and_exit_stations = []
     entry_and_exit_stations << card.journey_history[0].entry_station
@@ -70,12 +68,10 @@ describe Card do
   end
   it "deducts penalty fare if we don't touch in but touch out" do
     card.money = 400
-    allow(station_2).to receive_messages(:name= => "Blackfriars", :name => "Blackfriars")
     expect{ card.touch_out(station_2)}.to change{ card.money }.by(-Card::PENALTY_FARE)
   end
   it "deducts penalty fare if we don't touch out but touch in" do
     card.money = 400
-    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
     expect{ card.touch_in(station_1)}.to change{ card.money }.by(-Card::PENALTY_FARE)
   end
 end

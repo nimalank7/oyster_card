@@ -23,15 +23,15 @@ class Card
   def touch_in(station)
     raise("You do not have enough funds") if money < JOURNEY_VALUE
     deduct(PENALTY_FARE)
-    create_entry_station_journey(station)
+    create_entry_station_journey(station) # Extract to journey_log
     input_journey_into_journey_history(create_entry_station_journey(station))
     true
   end
 
   def touch_out(station)
-    if empty? || journey_history.last.exit_station != ""
+    if empty? || journey_history.last.exit_station != "" # Extract out
       deduct(PENALTY_FARE)
-      create_exit_station_journey(station)
+      create_exit_station_journey(station) # Extract out
       return input_journey_into_journey_history(create_exit_station_journey(station))
     end
     reimburse_penalty
@@ -61,7 +61,7 @@ class Card
   end # Extract this method out
   def set_exit_station(station)
     @journey_history.last.exit_station = station.name
-  end # Do we need to extract this out?
+  end # Extract this out
   def reimburse_penalty
     @money += (PENALTY_FARE - JOURNEY_VALUE)
   end
