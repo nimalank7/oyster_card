@@ -3,9 +3,10 @@ require_relative "./station.rb"
 
 
 class JourneyLog
-  def initialize
+  def initialize(journey_class = Journey)
     @journey_history = []
     @current_journey = nil
+    @journey_class = journey_class
   end
 
   def start(station)
@@ -57,6 +58,6 @@ class JourneyLog
   end
 
   def get_current_journey
-    @current_journey ||= Journey.new
+    @current_journey ||= @journey_class.new
   end
 end
