@@ -32,12 +32,11 @@ class JourneyLog
   end
 end
 =begin
-for touch out
-call the journey.finish
-call get_current_journey
-update the exit station accordingly
-and push @current_journey into the array
 
-in touch_out if journey_log.journey_history[1].exit_station != nil then reimburse
-sets current_journey back to nil
+for zone fares
+we need to take the absolute value of the zone difference
+then add 1 to it
+
+we'll have to modify our touch out method
+to take account of this
 =end

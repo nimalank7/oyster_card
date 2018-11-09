@@ -43,6 +43,4 @@ describe JourneyLog do
     entry_and_exit_stations << journey_log.journey_history[0].exit_station
     expect(entry_and_exit_stations).to eq ["Euston", "Blackfriars"]
   end
-
-
 end
