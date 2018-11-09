@@ -38,13 +38,10 @@ class Card
   end
 
   def reimburse_penalty
-    @money += (PENALTY_FARE - MINIMUM_JOURNEY_VALUE)
+    @money += (PENALTY_FARE - calculate_fare)
+  end
+  def calculate_fare
+    difference = (@journey_log.show_all_journeys.last.entry_station_zone - @journey_log.show_all_journeys.last.exit_station_zone).abs + 1
+    difference *= MINIMUM_JOURNEY_VALUE
   end
 end
-=begin
-for zone fares
-we need to take the absolute value of the zone difference
-then add 1 to it
-we'll have to modify our touch out method
-to take account of this
-=end

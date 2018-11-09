@@ -19,7 +19,7 @@ describe Card do
     allow(station_4).to receive_messages(:name= => "Beckton", :name => "Beckton")
     allow(station_4).to receive_messages(:zone= => 3, :zone => 3)
     allow(station_5).to receive_messages(:name= => "East Croydon", :name => "East Croydon")
-    allow(station_6).to receive_messages(:zone= => 6, :zone => 6)
+    allow(station_5).to receive_messages(:zone= => 6, :zone => 6)
   end
   it "adds 100 to the total" do
     card.add_money(100)
@@ -67,11 +67,11 @@ describe Card do
   it "deducts 200 for journey from zones 1 to 2" do
     card.money = 400
     card.touch_in(station_1)
-    expect{ card.touch_out(station_2)}.to change{ card.money }.by(0)
+    expect{ card.touch_out(station_3)}.to change{ card.money }.by(0)
   end
   it "deducts 400 for journey from zones 3 to 6" do
     card.money = 400
-    card.touch_in(station_1)
-    expect{ card.touch_out(station_2)}.to change{ card.money }.by(-200)
+    card.touch_in(station_4)
+    expect{ card.touch_out(station_5)}.to change{ card.money }.by(-200)
   end
 end
