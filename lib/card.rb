@@ -5,7 +5,7 @@ require_relative "./journey_log.rb"
 class Card
   attr_accessor :money
   MAXIMUM_VALUE = 500
-  JOURNEY_VALUE = 100
+  MINIMUM_JOURNEY_VALUE = 100
   PENALTY_FARE = 200
   def initialize
     @money = 0
@@ -21,7 +21,7 @@ class Card
   end
 
   def touch_in(station)
-    raise("You do not have enough funds") if money < JOURNEY_VALUE
+    raise("You do not have enough funds") if money < MINIMUM_JOURNEY_VALUE
     deduct(PENALTY_FARE)
     @journey_log.start(station)
   end
@@ -36,8 +36,9 @@ class Card
     @money -= amount
     true
   end
+
   def reimburse_penalty
-    @money += (PENALTY_FARE - JOURNEY_VALUE)
+    @money += (PENALTY_FARE - MINIMUM_JOURNEY_VALUE)
   end
 end
 =begin

@@ -7,7 +7,9 @@ describe Card do
   let(:station_2) {double :station_2}
   before(:each) do
     allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    allow(station_1).to receive_messages(:zone= => 1, :zone => 1)
     allow(station_2).to receive_messages(:name= => "Blackfriars", :name => "Blackfriars")
+    allow(station_2).to receive_messages(:zone= => 1, :zone => 1)
   end
   it "adds 100 to the total" do
     card.add_money(100)
@@ -19,6 +21,9 @@ describe Card do
   end
   it "returns 500 for capacity" do
     expect(Card::MAXIMUM_VALUE).to eq(500)
+  end
+  it "returns 100 for minimum journey value" do
+    expect(Card::MINIMUM_JOURNEY_VALUE).to eq(100)
   end
 
   it "cannot travel without min funds" do

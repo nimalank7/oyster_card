@@ -7,8 +7,10 @@ describe JourneyLog do
   let(:station_1) {double :station_1}
   let(:station_2) {double :station_2}
   before(:each) do
-    allow(station_1).to receive(:name).and_return("Euston")
-    allow(station_2).to receive(:name).and_return("Blackfriars")
+    allow(station_1).to receive_messages(:name= => "Euston", :name => "Euston")
+    allow(station_1).to receive_messages(:zone= => 1, :zone => 1)
+    allow(station_2).to receive_messages(:name= => "Blackfriars", :name => "Blackfriars")
+    allow(station_2).to receive_messages(:zone= => 1, :zone => 1)
   end
   it "initializes journey_history to empty array" do
     expect(journey_log.show_all_journeys).to eq []

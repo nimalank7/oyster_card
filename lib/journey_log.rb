@@ -11,6 +11,7 @@ class JourneyLog
   def start(station)
     get_current_journey
     set_entry_station(station)
+    set_entry_station_zone(station)
     log_journey
     true
   end
@@ -19,12 +20,14 @@ class JourneyLog
     if @current_journey == nil
       get_current_journey
       set_exit_station(station)
+      set_exit_station_zone(station)
       log_journey
       @current_journey = nil
       return true
     end
     get_current_journey
     set_exit_station(station)
+    set_exit_station_zone(station)
     @current_journey = nil
     true
   end
@@ -43,6 +46,14 @@ class JourneyLog
 
   def set_entry_station(station)
     @current_journey.entry_station = station.name
+  end
+
+  def set_exit_station_zone(station)
+    @current_journey.exit_station_zone = station.zone
+  end
+
+  def set_entry_station_zone(station)
+    @current_journey.entry_station_zone = station.zone
   end
 
   def get_current_journey
