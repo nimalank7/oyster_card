@@ -28,7 +28,7 @@ class Card
 
   def touch_out(station)
     @journey_log.finish(station)
-    @journey_log.journey_history.last.entry_station == "" ? deduct(PENALTY_FARE) : reimburse_penalty
+    @journey_log.show_all_journeys.last.entry_station == "" ? deduct(PENALTY_FARE) : reimburse_penalty
     true
   end
   private
@@ -40,3 +40,10 @@ class Card
     @money += (PENALTY_FARE - JOURNEY_VALUE)
   end
 end
+=begin
+for zone fares
+we need to take the absolute value of the zone difference
+then add 1 to it
+we'll have to modify our touch out method
+to take account of this
+=end

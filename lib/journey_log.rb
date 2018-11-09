@@ -3,40 +3,49 @@ require_relative "./station.rb"
 
 
 class JourneyLog
-  attr_reader :journey_history, :current_journey
   def initialize
     @journey_history = []
     @current_journey = nil
   end
+
   def start(station)
     get_current_journey
-    @current_journey.entry_station = station.name # Penalty fare is in the oyster touch in
-    @journey_history << @current_journey
+    set_entry_station(station)
+    log_journey
     true
   end
-  def get_current_journey
-    @current_journey ||= Journey.new
-  end
+
   def finish(station)
     if @current_journey == nil
       get_current_journey
-      @current_journey.exit_station = station.name
-      @journey_history << @current_journey
+      set_exit_station(station)
+      log_journey
       @current_journey = nil
       return true
     end
     get_current_journey
-    @current_journey.exit_station = station.name
+    set_exit_station(station)
     @current_journey = nil
     true
   end
+  def show_all_journeys
+    @journey_history.clone
+  end
+  private
+
+  def log_journey
+    @journey_history << @current_journey
+  end
+
+  def set_exit_station(station)
+    @current_journey.exit_station = station.name
+  end
+
+  def set_entry_station(station)
+    @current_journey.entry_station = station.name
+  end
+
+  def get_current_journey
+    @current_journey ||= Journey.new
+  end
 end
-=begin
-
-for zone fares
-we need to take the absolute value of the zone difference
-then add 1 to it
-
-we'll have to modify our touch out method
-to take account of this
-=end
